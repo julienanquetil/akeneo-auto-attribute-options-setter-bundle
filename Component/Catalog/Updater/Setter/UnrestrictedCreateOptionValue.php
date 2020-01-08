@@ -40,7 +40,7 @@ class UnrestrictedCreateOptionValue
      * @param $codeAttribute
      * @param $code
      */
-    public function createOptionValue($codeAttribute, $code) {
+    public function createOptionValue($codeAttribute, $code, $label) {
         $attributeOptionValue = $this->optionValueFactory->create();
 
         $tab = [
@@ -48,9 +48,9 @@ class UnrestrictedCreateOptionValue
             'code' => $code,
             'sort_order' => 2,
             'labels' => [
-                'de_DE' => $code,
-                'en_US' => $code,
-                'fr_FR' => $code,
+                'de_DE' => $label,
+                'en_US' => $label,
+                'fr_FR' => $label,
             ]
         ];
 

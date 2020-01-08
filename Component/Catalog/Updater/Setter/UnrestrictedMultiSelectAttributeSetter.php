@@ -52,8 +52,9 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
         if (null === $data) {
             $option = null;
         } else {
+            $label = $data;
             $data = preg_replace('/[^a-zA-Z0-9\']/', '_', $data);
-            $this->checkOption($attribute, $data);
+            $this->checkOption($attribute, $data, $label);
         }
 
         parent::setAttributeData($entityWithValues, $attribute, $data, $options);
@@ -63,7 +64,7 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
      * @param AttributeInterface $attribute
      * @param $datas
      */
-    protected function checkOption(AttributeInterface $attribute, $datas)
+    protected function checkOption(AttributeInterface $attribute, $datas, $label)
     {
         if (null === $datas) {
             return;
@@ -72,9 +73,8 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
         foreach ($datas as $data){
             $identifier = $attribute->getCode() . '.' . $data;
             $optionExists = $this->attrOptionRepository->optionExists($identifier);
-
             if(!$optionExists){
-                $this->unrestrictedCreateOptionValue->createOptionValue($attribute->getCode(), $data);
+                $this->unrestrictedCreateOptionValue->createOptionValue($attribute->getCode(), $data, $label);
             }
         }
     }

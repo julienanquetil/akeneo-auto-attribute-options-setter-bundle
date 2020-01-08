@@ -55,13 +55,14 @@ class UnrestrictedSimpleSelectAttributeSetter extends BaseSimpleSelectAttributeS
         if (null === $data) {
             $option = null;
         } else {
+            $label = $data;
             $data = preg_replace('/[^a-zA-Z0-9\']/', '_', $data);
 
             $identifier = $attribute->getCode() . '.' . $data;
             $option = $this->attrOptionRepository->optionExists($identifier);
 
             if(!$option){
-                $this->unrestrictedCreateOptionValue->createOptionValue($attribute->getCode(), $data);
+                $this->unrestrictedCreateOptionValue->createOptionValue($attribute->getCode(), $data, $label);
             }
         }
 
