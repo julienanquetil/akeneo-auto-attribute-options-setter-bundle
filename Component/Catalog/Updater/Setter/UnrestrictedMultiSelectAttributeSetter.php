@@ -1,22 +1,17 @@
 <?php
-
 namespace Niji\AutoAttributeOptionsSetterBundle\Component\Catalog\Updater\Setter;
-
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
-use Pim\Component\Catalog\Updater\Setter\AttributeSetter as BaseMultiSelectAttributeSetter;
-
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter as BaseMultiSelectAttributeSetter;
 class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSetter
 {
     /** @var AttributeOptionRepositoryInterface */
     protected $attrOptionRepository;
-
     /** @var UnrestrictedCreateOptionValue */
     protected $unrestrictedCreateOptionValue;
-
     /**
      * UnrestrictedMultiSelectAttributeSetter constructor.
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
@@ -35,8 +30,6 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
         $this->unrestrictedCreateOptionValue = $unrestrictedCreateOptionValue;
         parent::__construct($entityWithValuesBuilder, $supportedTypes);
     }
-
-
     /**
      * @param EntityWithValuesInterface $entityWithValues
      * @param AttributeInterface $attribute
@@ -56,10 +49,8 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
             $data = preg_replace('/[^a-zA-Z0-9\']/', '_', $data);
             $this->checkOption($attribute, $data, $label);
         }
-
         parent::setAttributeData($entityWithValues, $attribute, $data, $options);
     }
-
     /**
      * @param AttributeInterface $attribute
      * @param $datas
@@ -69,7 +60,6 @@ class UnrestrictedMultiSelectAttributeSetter extends BaseMultiSelectAttributeSet
         if (null === $datas) {
             return;
         }
-
         foreach ($datas as $data){
             $identifier = $attribute->getCode() . '.' . $data;
             $optionExists = $this->attrOptionRepository->optionExists($identifier);

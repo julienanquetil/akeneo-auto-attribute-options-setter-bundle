@@ -1,22 +1,17 @@
 <?php
-
 namespace Niji\AutoAttributeOptionsSetterBundle\Component\Catalog\Updater\Setter;
-
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Pim\Component\Catalog\Updater\AttributeOptionUpdater;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
-
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher;
 class UnrestrictedCreateOptionValue
 {
     /** @var SimpleFactoryInterface */
     protected $optionValueFactory;
-
-  /**
-   * @var ObjectDetacher
-   */
+    /**
+     * @var ObjectDetacher
+     */
     protected $objectDetacher;
-
     /**
      * UnrestrictedCreateOptionValue constructor.
      * @param SimpleFactoryInterface $optionValueFactory
@@ -35,28 +30,22 @@ class UnrestrictedCreateOptionValue
         $this->baseSaver = $baseSaver;
         $this->objectDetacher = $objectDetacher;
     }
-
     /**
      * @param $codeAttribute
      * @param $code
      */
     public function createOptionValue($codeAttribute, $code, $label) {
         $attributeOptionValue = $this->optionValueFactory->create();
-
         $tab = [
             'attribute' => $codeAttribute,
             'code' => $code,
             'sort_order' => 2,
             'labels' => [
-                'de_DE' => $label,
-                'en_US' => $label,
                 'fr_FR' => $label,
             ]
         ];
-
         $this->attributeOptionUpdater->update($attributeOptionValue, $tab, []);
         $this->baseSaver->save($attributeOptionValue, []);
-
         $this->objectDetacher->detach($attributeOptionValue);
     }
 }

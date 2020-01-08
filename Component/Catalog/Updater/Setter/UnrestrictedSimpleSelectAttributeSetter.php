@@ -1,25 +1,19 @@
 <?php
-
 namespace Niji\AutoAttributeOptionsSetterBundle\Component\Catalog\Updater\Setter;
-
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
-use Pim\Component\Catalog\Updater\Setter\AttributeSetter as BaseSimpleSelectAttributeSetter;
-
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter as BaseSimpleSelectAttributeSetter;
 class UnrestrictedSimpleSelectAttributeSetter extends BaseSimpleSelectAttributeSetter
 {
     /** @var \Doctrine\ORM\EntityRepository */
     protected $attrOptionRepository;
-
     /** @var UnrestrictedCreateOptionValue */
     protected $unrestrictedCreateOptionValue;
-
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
-
     /**
      * UnrestrictedSimpleSelectAttributeSetter constructor.
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
@@ -38,8 +32,6 @@ class UnrestrictedSimpleSelectAttributeSetter extends BaseSimpleSelectAttributeS
         $this->unrestrictedCreateOptionValue = $unrestrictedCreateOptionValue;
         parent::__construct($entityWithValuesBuilder, $supportedTypes);
     }
-
-
     /**
      * @param EntityWithValuesInterface $entityWithValues
      * @param AttributeInterface $attribute
@@ -57,15 +49,12 @@ class UnrestrictedSimpleSelectAttributeSetter extends BaseSimpleSelectAttributeS
         } else {
             $label = $data;
             $data = preg_replace('/[^a-zA-Z0-9\']/', '_', $data);
-
             $identifier = $attribute->getCode() . '.' . $data;
             $option = $this->attrOptionRepository->optionExists($identifier);
-
             if(!$option){
                 $this->unrestrictedCreateOptionValue->createOptionValue($attribute->getCode(), $data, $label);
             }
         }
-
         parent::setAttributeData($entityWithValues, $attribute, $data, $options);
     }
 }
